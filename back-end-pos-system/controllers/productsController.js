@@ -4,13 +4,26 @@ const products = db.products
 
 const getAllProducts = async (req, res) => {
     try {
-        const result = await products.findAll()
+        const { page } = req.query
+
+        const paginationLimit = 4
+        const paginationOffset = (Number(page) - 1) * paginationLimit
+
+        const totalProducts = await products.findAll()
+
+        const result = await products.findAll({
+            offset : paginationOffset,
+            limit : paginationLimit
+        })
+
+        const totalPage = Math.ceil(totalProducts.length/paginationLimit)
 
         if (result) {
             return res.status(200).send({
                 success: true,
                 message: "get all data success",
-                data: result
+                data: result,
+                totalPage : totalPage
             })
         } else {
             return res.status(200).send({
