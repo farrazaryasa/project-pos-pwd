@@ -3,7 +3,7 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 
 // import page
-import LandingPage from './pages/LandingPage/LandingPage';
+import ProductsList from './pages/ProductList/ProductList';
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
 
 
     <Routes>
-      <Route path='/' element={<LandingPage />} />
+      <Route path='/' element={<ProductsList />} />
     </Routes>
     </>
   );
