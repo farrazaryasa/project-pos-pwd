@@ -3,7 +3,8 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 
 // import page
-import LandingPage from './pages/LandingPage/LandingPage';
+import ProductsList from './pages/ProductList/ProductList';
+import ProductDetails from './pages/DetailPage/ProductDetails';
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
 
 
     <Routes>
-      <Route path='/' element={<LandingPage />} />
+      <Route path='/' element={<ProductsList />} />
+      <Route path='/:product_id' element={<ProductDetails />} />
     </Routes>
     </>
   );
