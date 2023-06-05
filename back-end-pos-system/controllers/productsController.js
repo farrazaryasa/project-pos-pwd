@@ -29,8 +29,39 @@ const getAllProducts = async (req, res) => {
     }
 }
 
+const getProductDetails = async (req, res) => {
+    try {
+        const { product_id } = req.params
+
+        const result = await products.findOne({
+            id: product_id
+        })
+
+        if (result) {
+            res.status(200).send({
+                success: true,
+                message: 'get product detail success',
+                data: result
+            })
+        } else {
+            res.status(404).send({
+                success: false,
+                message: 'no product found',
+                data: null
+            })
+        }
+    } catch (error) {
+        res.status(500).send({
+            success: false,
+            message: error.message,
+            data: null
+        })
+    }
+}
+
 
 module.exports = {
-    getAllProducts
+    getAllProducts,
+    getProductDetails
 }
 

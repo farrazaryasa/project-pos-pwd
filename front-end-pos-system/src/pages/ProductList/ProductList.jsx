@@ -1,4 +1,3 @@
-import RightColumn from '../../components/landingPageComp/RightColumn';
 import LeftNavbar from '../../components/landingPageComp/LeftNavbar';
 import ProductCenter from '../../components/landingPageComp/ProductCenter';
 
@@ -10,9 +9,6 @@ export default function ProductsList() {
 
             {/* Menu tengah */}
             <ProductCenter />
-
-            {/* Transaction kanan */}
-            <RightColumn />
         </div>
     )
 }

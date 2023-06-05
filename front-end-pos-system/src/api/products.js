@@ -6,3 +6,8 @@ export function getAllProducts() {
     )
 }
 
+export function getProductDetails(product_id) {
+    return axios.get(
+        `http://localhost:3456/product/${Number(product_id)}`
+    )
+}

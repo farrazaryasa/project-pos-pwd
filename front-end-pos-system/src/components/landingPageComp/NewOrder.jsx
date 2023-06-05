@@ -2,7 +2,7 @@ import OrderCard from "./OrderCard";
 
 
 
-export default function RightColumn() {
+export default function NewOrder() {
     return (
         <div className="flex-2 w-[350px] h-inherit mx-9 flex flex-col gap-9">
             <div className="font-bold text-2xl underline">New Order</div>
