@@ -5,6 +5,6 @@ const router = express.Router()
 const {productsController} = require('./../controllers')
 
 router.get('/', productsController.getAllProducts)
-router.get('/:product_id', productsController.getProductDetails)
+router.get('/:id', productsController.getProductDetails)
 
 module.exports = router

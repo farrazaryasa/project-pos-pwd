@@ -1,4 +1,4 @@
-import { Modal } from "flowbite-react";
+import { Button, Modal } from "flowbite-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -23,16 +23,54 @@ export default function ProductCard(props) {
                 Details
             </button>
 
-            {/* <Modal show={visible}>
+            <Modal show={visible} onClose={() => setVisible(false)}>
                 <Modal.Header>
                     Product Details
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="border">
-                        <img src={props.data.value.image} className="border"/>
+                    <div className="flex gap-5">
+                        <div className="w-1/2">
+                            <img src={props.data.value.image} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <div className="font-bold flex gap-5">
+                                Name :
+                                <div className="font-normal">
+                                    {props.data.value.name}
+                                </div>
+                            </div>
+                            <div className="font-bold flex gap-5">
+                                Price :
+                                <div className="font-normal">
+                                    Rp {(props.data.value.price).toLocaleString('id')}
+                                </div>
+                            </div>
+                            <div className="font-bold flex gap-5">
+                                Stock :
+                                <div className="font-normal">
+                                    {props.data.value.stock}
+                                </div>
+                            </div>
+                            <div className="font-bold flex gap-5">
+                                Category :
+                                <div className="font-normal">
+                                    -
+                                </div>
+                            </div>
+                            <div className="font-bold flex gap-5">
+                                Ingredients :
+                                <div className="font-normal">
+                                    -
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </Modal.Body>
-            </Modal> */}
+                <Modal.Footer>
+                    <Button>Edit</Button>
+                    <Button>Delete</Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }

@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
 })
 
 // app.use("/user", userRouter)
-app.use("/product", productsRouter)
+app.use("/products", productsRouter)
 
 app.listen(PORT, () => {
     console.log("server run on port : ", PORT);
