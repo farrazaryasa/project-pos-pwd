@@ -1,11 +1,20 @@
-import { Button, Modal } from "flowbite-react";
+import { Button, Modal, Spinner } from "flowbite-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { deleteProduct } from "../../api/products";
 
 
 export default function ProductCard(props) {
 
     const [visible, setVisible] = useState(false)
+    const [id, setId] = useState(props.data.value.id)
+
+    const deleteButton = async () => {
+        const deleteResult = await deleteProduct(id)
+        alert('delete product success')
+        setTimeout(window.location.reload(), 1000)
+    }
+
 
     return (
         <div className="relative w-[250px] flex flex-col items-center rounded-lg gap-5 border py-12">
@@ -68,7 +77,7 @@ export default function ProductCard(props) {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button>Edit</Button>
-                    <Button>Delete</Button>
+                    <Button onClick={deleteButton}>Delete</Button>
                 </Modal.Footer>
             </Modal>
         </div>
