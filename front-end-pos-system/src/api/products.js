@@ -11,3 +11,9 @@ export function getProductDetails(product_id) {
         `http://localhost:3456/products/${Number(product_id)}`
     )
 }
+
+export function deleteProduct(product_id) {
+    return axios.delete(
+        `http://localhost:3456/products/${Number(product_id)}`
+    )
+}
