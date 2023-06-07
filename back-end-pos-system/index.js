@@ -4,6 +4,7 @@ const PORT = 3456
 const cors = require('cors')
 
 //import router
+const authRoutes = require('./routers/authRouter')
 const { productsRouter } = require('./routers')
 
 app.use(express.json())
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
 
 // app.use("/user", userRouter)
 app.use("/products", productsRouter)
+app.use(authRoutes)
 
 app.listen(PORT, () => {
     console.log("server run on port : ", PORT);
