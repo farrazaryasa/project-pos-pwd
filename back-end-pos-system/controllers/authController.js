@@ -7,7 +7,7 @@ module.exports = {
 
     try {
       const { id, password } = req.body
-      
+
       if (!id) {
         return res.status(400).json({ success: false, message: 'Email harus diisi' })
       }
@@ -25,7 +25,17 @@ module.exports = {
         //jika email dan password valid buat token JWT
         const token = jwt.sign({ id }, 'secretKey')
 
-        res.json({ success: true, message: 'Login berhasil', token })
+        res.status(200).send(
+          { success: true, 
+            message: 'Login berhasil', 
+            token, 
+            userData: {
+              id: findUser.id,
+              first_name: findUser.first_name,
+              last_name: findUser.last_name,
+              is_admin: findUser.is_admin
+            } 
+          })
       }
     } catch (error) {
       console.log(error)
