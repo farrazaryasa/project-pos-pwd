@@ -78,7 +78,6 @@ const addProducts = async (req, res) => {
     try {
         const { name, price, stock } = req.body
         const image = req.file
-        console.log(name, price, stock, image);
 
         if (!name || !price || !stock || !image) {
             res.status(400).send({
@@ -159,9 +158,64 @@ const deleteProducts = async (req, res) => {
 
 const modifyProducts = async (req, res) => {
     try {
+        const { name, price, stock } = req.body
+        const image = req.file
+        const { id } = req.params
+        // let token = req.headers.authorization
+        // token = token.split(" ")[1]
+        // const userToken = jwt.verify(token, 'secretKey')
+
+        const findProduct = await products.findOne({
+            where: {
+                id: id
+            }
+        })
+
+        if (findProduct) {
+            if (name) {
+                const result = await products.update(
+                    { name: name },
+                    { where: { id: findProduct.id } }
+                )
+            }
+            if (price) {
+                const result = await products.update(
+                    { price: price },
+                    { where: { id: findProduct.id } }
+                )
+            }
+            if (stock) {
+                const result = await products.update(
+                    { stock: stock },
+                    { where: { id: findProduct.id } }
+                )
+            }
+            if (image) {
+                const result = await products.update(
+                    { image: image?.filename },
+                    { where: { id: findProduct.id } }
+                )
+            }
+
+            res.status(200).send({
+                success: true,
+                message: 'modify product success',
+                data: {}
+            })
+        } else {
+            res.status(404).send({
+                success: false,
+                message: 'products not found',
+                data: null
+            })
+        }
 
     } catch (error) {
-
+        res.status(500).send({
+            success: false,
+            message: error.message,
+            data: null
+        })
     }
 }
 
@@ -170,6 +224,7 @@ module.exports = {
     getAllProducts,
     getProductDetails,
     addProducts,
-    deleteProducts
+    deleteProducts,
+    modifyProducts
 }
 

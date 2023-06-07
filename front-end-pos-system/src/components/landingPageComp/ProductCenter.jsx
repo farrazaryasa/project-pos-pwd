@@ -54,7 +54,7 @@ export default function ProductCenter() {
                 alert('Create new product success')
                 setTimeout(() => {
                     window.location.reload()
-                }, 800);
+                }, 500);
             } else {
                 alert('Create new product failed')
             }
