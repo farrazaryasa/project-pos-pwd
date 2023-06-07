@@ -4,9 +4,9 @@ const PORT = 3456
 const cors = require('cors')
 
 //import router
-const authRoutes = require('./routers/authRouter')
-const { productsRouter } = require('./routers')
+const { productsRouter, authRouter } = require('./routers')
 
+app.use(express.static('public'))
 app.use(express.json())
 app.use(cors())
 
@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 
 // app.use("/user", userRouter)
 app.use("/products", productsRouter)
-app.use(authRoutes)
+app.use("/auth", authRouter)
 
 app.listen(PORT, () => {
     console.log("server run on port : ", PORT);
