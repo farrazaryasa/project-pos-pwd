@@ -6,6 +6,7 @@ const cors = require('cors')
 //import router
 const { productsRouter } = require('./routers')
 
+app.use(express.static('public'))
 app.use(express.json())
 app.use(cors())
 
