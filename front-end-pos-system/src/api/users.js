@@ -10,3 +10,12 @@ export function postLogin(data) {
         }
     )
 }
+
+export function userLogout(data){
+    return axios.post(
+        process.env.REACT_APP_API + `/auth/logout`,
+        {
+            id : data.id
+        }
+    )
+}

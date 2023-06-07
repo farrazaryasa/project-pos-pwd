@@ -26,6 +26,10 @@ module.exports = {
       } else {
         //jika email dan password valid buat token JWT
         const token = jwt.sign({ id }, 'secretKey')
+        const updateStatus = await users.update(
+          { is_login: true },
+          { where: { id: id } }
+        )
 
         res.status(200).send(
           {
@@ -41,10 +45,46 @@ module.exports = {
           })
       }
     } catch (error) {
-      res.status(500).json({
+      res.status(500).send({
         success: false,
-        message: error.message
+        message: error.message,
+        data: null
       })
     }
   },
+
+  logout: async (req, res) => {
+    try {
+      const { id } = req.body
+
+      const findUser = await users.findOne(
+        { where: { id: id } }
+      )
+
+      if (findUser) {
+        const updateLogout = await users.update(
+          { is_login: false },
+          { where: { id: findUser.id } }
+        )
+
+        res.status(200).send({
+          success: true,
+          message: 'logout success',
+          data: {}
+        })
+      } else {
+        res.status(400).send({
+          success: false,
+          message: 'logout failed',
+          data: null
+        })
+      }
+    } catch (error) {
+      res.status(500).send({
+        success: false,
+        message: error.message,
+        data: null
+      })
+    }
+  }
 }

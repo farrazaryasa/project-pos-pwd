@@ -4,6 +4,7 @@ import { LuLogIn } from 'react-icons/lu';
 import { BsPeopleFill } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { userLogout } from '../../api/users';
 
 
 export default function LeftNavbar() {
@@ -12,6 +13,21 @@ export default function LeftNavbar() {
     const checkLogin = async () => {
         const getLoginData = await JSON.parse(localStorage.getItem('loginDetails'))
         setLoginData(getLoginData)
+    }
+
+    const logoutProcess = async () => {
+        const getLoginData = await JSON.parse(localStorage.getItem('loginDetails'))
+        const logout = await userLogout({ id: getLoginData.id })
+
+        if(logout.data.success){
+            localStorage.removeItem('loginDetails')
+            alert('Logout success')
+            setTimeout(() => {
+                window.location.reload()
+            }, 200)
+        }else{
+            alert('Logout failed, please try again!')
+        }
     }
 
     useEffect(() => {
@@ -48,7 +64,7 @@ export default function LeftNavbar() {
             </div>
             {
                 loginData ?
-                    <div className="border my-5 px-5 w-full h-[100px] flex items-center justify-center text-lg font-bold rounded-lg hover:bg-blue-800 hover:text-white hover:cursor-pointer">
+                    <div onClick={logoutProcess} className="border my-5 px-5 w-full h-[100px] flex items-center justify-center text-lg font-bold rounded-lg hover:bg-blue-800 hover:text-white hover:cursor-pointer">
                         <div className='flex flex-col gap-2'>
                             <div className='flex items-center justify-center'><LuLogIn size={'25px'} /></div>
                             <div>Logout</div>

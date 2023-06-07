@@ -76,7 +76,7 @@ const Login = () => {
           <p>
             <input
               type="text"
-              placeholder="Email"
+              placeholder="Employee ID"
               className="input-field w-full bg-white border border-gray-300 py-4 px-6"
               onChange={handleEmailChange}
             />
