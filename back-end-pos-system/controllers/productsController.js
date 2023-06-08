@@ -1,5 +1,6 @@
 const db = require('./../models')
 const products = db.products
+const categories = db.categories
 
 
 const getAllProducts = async (req, res) => {
@@ -11,10 +12,13 @@ const getAllProducts = async (req, res) => {
 
         const totalProducts = await products.findAll()
 
-        const result = await products.findAll({
-            offset: paginationOffset,
-            limit: paginationLimit
-        })
+        const result = await products.findAll(
+            {
+                offset: paginationOffset,
+                limit: paginationLimit,
+                include: categories
+            }
+        )
 
         const totalPage = Math.ceil(totalProducts.length / paginationLimit)
 
@@ -219,12 +223,52 @@ const modifyProducts = async (req, res) => {
     }
 }
 
+const filterProducts = async (req, res) => {
+    try {
+        const { category } = req.query
+        const catQuery = category.replaceAll('%', ' ')
+
+        const findCategory = await categories.findOne({
+            where: {
+                name: catQuery
+            }
+        })
+
+        if (findCategory) {
+            const result = await products.findAll({
+                where: {
+                    category_id: findCategory.id
+                }
+            })
+
+            res.status(200).send({
+                success: true,
+                message: `get all products in ${category} categories success`,
+                data: result
+            })
+        } else {
+            res.status(404).send({
+                success: false,
+                message: 'no products found',
+                data: null
+            })
+        }
+    } catch (error) {
+        res.status(500).send({
+            success: false,
+            message: error.message,
+            data: null
+        })
+    }
+}
+
 
 module.exports = {
     getAllProducts,
     getProductDetails,
     addProducts,
     deleteProducts,
-    modifyProducts
+    modifyProducts,
+    filterProducts
 }
 

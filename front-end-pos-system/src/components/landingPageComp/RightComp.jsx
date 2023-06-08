@@ -15,23 +15,23 @@ export default function RightComp() {
                     <Label>Category</Label>
                     <div className="flex flex-col gap-2 mt-2">
                         <div className="flex gap-1 items-center"> 
-                            <Radio />
+                            <Radio id="indonesianFood" name="category" value='indonesian%food'/>
                             <Label>Indonesian Food</Label>
                         </div>
                         <div className="flex gap-1 items-center">
-                            <Radio />
+                            <Radio id="westernFood" name="category" value='western%food'/>
                             <Label>Western Food</Label>
                         </div>
                         <div className="flex gap-1 items-center">
-                            <Radio />
+                            <Radio id="coldBeverages" name="category" value='cold%beverages'/>
                             <Label>Cold Beverages</Label>
                         </div>
                         <div className="flex gap-1 items-center">
-                            <Radio />
+                            <Radio id="hotBeverages" name="category" value='hot%beverages'/>
                             <Label>Hot Beverages</Label>
                         </div>
                         <div className="flex gap-1 items-center">
-                            <Radio />
+                            <Radio id="softDrink" name="category" value='soft%drink'/>
                             <Label>Soft Drink</Label>
                         </div>
                     </div>

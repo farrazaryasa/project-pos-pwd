@@ -7,6 +7,7 @@ const { productMulter } = require('../middleware/productMulter')
 const {verifyToken} = require('../middleware/verifyToken')
 
 router.get('/', productsController.getAllProducts)
+router.get('/search', productsController.filterProducts)
 router.get('/:id', productsController.getProductDetails)
 router.delete('/:id', verifyToken, productsController.deleteProducts)
 router.post('/new', verifyToken, productMulter.single('image'), productsController.addProducts)
