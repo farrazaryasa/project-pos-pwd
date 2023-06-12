@@ -32,6 +32,32 @@ const createCategory = async (req, res) => {
     }
 }
 
+const getAllCategories = async (req, res) => {
+    try {
+        const result = await categories.findAll()
+        if (result) {
+            res.status(200).send({
+                success: true,
+                message: 'get all categories success',
+                data: result
+            })
+        } else {
+            res.statu(404).send({
+                success: false,
+                message: 'no categories found',
+                data: null
+            })
+        }
+    } catch (error) {
+        res.status(500).send({
+            success: false,
+            message: error.message,
+            data: null
+        })
+    }
+}
+
 module.exports = {
-    createCategory
+    createCategory,
+    getAllCategories
 }

@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
 // app.use("/user", userRouter)
 app.use("/products", productsRouter)
 app.use("/auth", authRouter)
-app.use("categories", categoriesRouter)
+app.use("/categories", categoriesRouter)
 
 app.listen(PORT, () => {
     console.log("server run on port : ", PORT);

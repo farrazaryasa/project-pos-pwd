@@ -5,36 +5,73 @@ const categories = db.categories
 
 const getAllProducts = async (req, res) => {
     try {
-        const { page } = req.query
+        const { page, category } = req.query
 
         const paginationLimit = 10
         const paginationOffset = (Number(page) - 1) * paginationLimit
 
-        const totalProducts = await products.findAll()
+        if (category) {
+            const catQuery = category.replaceAll('%', ' ')
 
-        const result = await products.findAll(
-            {
-                offset: paginationOffset,
-                limit: paginationLimit,
-                include: categories
+            const findCategory = await categories.findOne({
+                where: {
+                    name: catQuery
+                }
+            })
+
+            if (findCategory) {
+                const result = await products.findAndCountAll({
+                    where: {
+                        category_id: findCategory.id
+                    },
+                    offset: paginationOffset,
+                    limit: paginationLimit,
+                    include: categories
+                })
+
+                const totalPage = Math.ceil(result.count / paginationLimit)
+
+                res.status(200).send({
+                    success: true,
+                    message: `get all products in ${catQuery} categories success`,
+                    data: result,
+                    totalPage: totalPage
+                })
+            } else {
+                res.status(404).send({
+                    success: false,
+                    message: 'no products found',
+                    data: null
+                })
             }
-        )
 
-        const totalPage = Math.ceil(totalProducts.length / paginationLimit)
-
-        if (result) {
-            return res.status(200).send({
-                success: true,
-                message: "get all data success",
-                data: result,
-                totalPage: totalPage
-            })
         } else {
-            return res.status(200).send({
-                success: false,
-                message: "get all data failed",
-                data: {}
-            })
+            const totalProducts = await products.findAll()
+
+            const result = await products.findAndCountAll(
+                {
+                    offset: paginationOffset,
+                    limit: paginationLimit,
+                    include: categories,
+                }
+            )
+
+            const totalPage = Math.ceil(result.count / paginationLimit)
+
+            if (result) {
+                return res.status(200).send({
+                    success: true,
+                    message: "get all data success",
+                    data: result,
+                    totalPage: totalPage
+                })
+            } else {
+                return res.status(200).send({
+                    success: false,
+                    message: "get all data failed",
+                    data: {}
+                })
+            }
         }
 
     } catch (error) {
@@ -80,33 +117,48 @@ const getProductDetails = async (req, res) => {
 
 const addProducts = async (req, res) => {
     try {
-        const { name, price, stock } = req.body
+        const { name, price, stock, category } = req.body
         const image = req.file
 
-        if (!name || !price || !stock || !image) {
+        if (!name || !price || !stock || !image || !category) {
             res.status(400).send({
                 success: false,
                 message: 'fill all the fields',
                 data: null
             })
         } else {
-            const postProduct = await products.create({
-                name: name,
-                price: price,
-                stock: stock,
-                image: image?.filename
+            const findCategory = await categories.findOne({
+                where: {
+                    name: category
+                }
             })
 
-            if (postProduct) {
-                res.status(200).send({
-                    success: true,
-                    message: 'Create new product success',
-                    data: postProduct
+            if (findCategory) {
+                const postProduct = await products.create({
+                    name: name,
+                    price: price,
+                    stock: stock,
+                    image: image?.filename,
+                    category_id: findCategory.id
                 })
+
+                if (postProduct) {
+                    res.status(200).send({
+                        success: true,
+                        message: 'Create new product success',
+                        data: postProduct
+                    })
+                } else {
+                    res.status(400).send({
+                        success: false,
+                        message: 'failed to create new product',
+                        data: null
+                    })
+                }
             } else {
                 res.status(400).send({
                     success: false,
-                    message: 'failed to create new product',
+                    message: 'Category not found',
                     data: null
                 })
             }
@@ -138,6 +190,7 @@ const deleteProducts = async (req, res) => {
                     id: findProduct.id
                 }
             })
+            console.log('id => ', findProduct.id);
 
             res.status(200).send({
                 success: true,
@@ -223,52 +276,12 @@ const modifyProducts = async (req, res) => {
     }
 }
 
-const filterProducts = async (req, res) => {
-    try {
-        const { category } = req.query
-        const catQuery = category.replaceAll('%', ' ')
-
-        const findCategory = await categories.findOne({
-            where: {
-                name: catQuery
-            }
-        })
-
-        if (findCategory) {
-            const result = await products.findAll({
-                where: {
-                    category_id: findCategory.id
-                }
-            })
-
-            res.status(200).send({
-                success: true,
-                message: `get all products in ${category} categories success`,
-                data: result
-            })
-        } else {
-            res.status(404).send({
-                success: false,
-                message: 'no products found',
-                data: null
-            })
-        }
-    } catch (error) {
-        res.status(500).send({
-            success: false,
-            message: error.message,
-            data: null
-        })
-    }
-}
-
 
 module.exports = {
     getAllProducts,
     getProductDetails,
     addProducts,
     deleteProducts,
-    modifyProducts,
-    filterProducts
+    modifyProducts
 }
 

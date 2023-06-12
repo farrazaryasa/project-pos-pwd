@@ -1,9 +1,16 @@
 import axios from "axios"
 const userLogin = localStorage.getItem("loginDetails") ? JSON.parse(localStorage?.getItem("loginDetails")) : null
-console.log(userLogin);
-export function getAllProducts(page) {
+
+export function getAllProducts(data) {
+    console.log(data);
     return axios.get(
-        process.env.REACT_APP_API + `/products?page=${Number(page)}`
+        process.env.REACT_APP_API + `/products?`,
+        {
+            params: {
+                page: data.page,
+                category: data.filterCategory
+            }
+        }
     )
 }
 
@@ -17,8 +24,8 @@ export function deleteProduct(product_id) {
     return axios.delete(
         process.env.REACT_APP_API + `/products/${Number(product_id)}`,
         {
-            headers : {
-                Authorization : `bearer ${userLogin?.token}`
+            headers: {
+                Authorization: `bearer ${userLogin?.token}`
             }
         }
     )
@@ -31,11 +38,12 @@ export function createProducts(data) {
             name: data.name,
             price: data.price,
             stock: data.stock,
-            image: data.image
+            image: data.image,
+            category: data.category
         },
         {
             headers: {
-                Authorization : `Bearer ${userLogin?.token}`,
+                Authorization: `Bearer ${userLogin?.token}`,
                 "Content-Type": "multipart/form-data"
             }
         }
@@ -53,7 +61,7 @@ export function modifyProducts(data) {
         },
         {
             headers: {
-                Authorization : `Bearer ${userLogin?.token}`,
+                Authorization: `Bearer ${userLogin?.token}`,
                 "Content-Type": "multipart/form-data"
             }
         }
