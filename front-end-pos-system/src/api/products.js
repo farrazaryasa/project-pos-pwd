@@ -2,7 +2,6 @@ import axios from "axios"
 const userLogin = localStorage.getItem("loginDetails") ? JSON.parse(localStorage?.getItem("loginDetails")) : null
 
 export function getAllProducts(data) {
-    console.log(data);
     return axios.get(
         process.env.REACT_APP_API + `/products?`,
         {

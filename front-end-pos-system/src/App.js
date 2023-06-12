@@ -4,9 +4,9 @@ import { Routes, Route } from 'react-router-dom';
 
 // import page
 import ProductsList from './pages/ProductList/ProductList';
-import LandingPage from './pages/LandingPage/LandingPage';
 import Login from './pages/Login';
 import LeftNavbar from './components/landingPageComp/LeftNavbar';
+import CashierLandingPage from './pages/CashierLandingPage/CashierLandingPage';
 
 function App() {
   return (
@@ -14,9 +14,9 @@ function App() {
       <LeftNavbar />
 
       <Routes>
-        <Route path='/' element={<LandingPage />} />
         <Route path='/products' element={<ProductsList />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/order' element={<CashierLandingPage />} />
       </Routes>
     </div>
   );

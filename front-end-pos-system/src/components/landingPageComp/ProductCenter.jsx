@@ -19,7 +19,6 @@ export default function ProductCenter() {
     const _stock = useRef()
     const _image = useRef()
     const _category = useRef()
-    const _filterCategory = useRef()
 
     const getProducts = async () => {
         const catQuery = filterCategory.replaceAll(' ', '%')
@@ -32,14 +31,14 @@ export default function ProductCenter() {
     const nextPage = () => {
         if (page !== data.totalPage) {
             setPage(page += 1)
-            getProducts(page)
+            getProducts()
         }
     }
 
     const prevPage = () => {
         if (page > 1) {
             setPage(page -= 1)
-            getProducts(page)
+            getProducts()
         }
     }
 
@@ -105,7 +104,7 @@ export default function ProductCenter() {
                                         category ?
                                             category?.data?.map((value, index) => {
                                                 return (
-                                                    <div key={index} ref={_filterCategory} className="flex gap-1 items-center">
+                                                    <div key={index} className="flex gap-1 items-center">
                                                         <Radio id={value.name} name="category" onClick={() => filter(value)} value={value.name} />
                                                         <Label>{value.name}</Label>
                                                     </div>
