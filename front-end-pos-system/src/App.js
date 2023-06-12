@@ -10,14 +10,14 @@ import LeftNavbar from './components/landingPageComp/LeftNavbar';
 
 function App() {
   return (
-    <div className='flex gap-5 w-full h-inherit'>    
-    <LeftNavbar />
+    <div className='flex gap-5 w-full h-inherit'>
+      <LeftNavbar />
 
-    <Routes>
-      <Route path='/' element={<LandingPage />} />
-      <Route path='/products' element={<ProductsList />} />
-      <Route path='/login' element={<Login />} />
-    </Routes>
+      <Routes>
+        <Route path='/' element={<LandingPage />} />
+        <Route path='/products' element={<ProductsList />} />
+        <Route path='/login' element={<Login />} />
+      </Routes>
     </div>
   );
 }

@@ -15,7 +15,7 @@ module.exports = {
         })
       }
 
-      const findUser = await users.findOne({ where: { id: id } })
+      const findUser = await users.findOne({ where: { id: id, password: password } })
 
       if (!findUser) {
         return res.status(401).send({

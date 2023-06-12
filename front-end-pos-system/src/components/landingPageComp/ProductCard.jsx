@@ -7,7 +7,7 @@ import { deleteProduct, modifyProducts } from "../../api/products";
 export default function ProductCard(props) {
 
     const [visible, setVisible] = useState(false)
-    const [id, setId] = useState(props.data.value.id)
+    const id = props.data.value.id
     const [edit, setEdit] = useState(false)
     const _name = useRef()
     const _price = useRef()
@@ -75,15 +75,15 @@ export default function ProductCard(props) {
                             <div className="flex flex-col gap-2">
                                 <div>
                                     <Label>Product Name</Label>
-                                    <TextInput ref={_name} defaultValue={''}></TextInput>
+                                    <TextInput ref={_name} defaultValue={''} placeholder={props.data.value.name}></TextInput>
                                 </div>
                                 <div>
                                     <Label>Price</Label>
-                                    <TextInput ref={_price} defaultValue={''}></TextInput>
+                                    <TextInput ref={_price} defaultValue={''} placeholder={props.data.value.price}></TextInput>
                                 </div>
                                 <div>
                                     <Label>Stock</Label>
-                                    <TextInput ref={_stock} defaultValue={''}></TextInput>
+                                    <TextInput ref={_stock} defaultValue={''} placeholder={props.data.value.stock}></TextInput>
                                 </div>
                                 <div>
                                     <Label>Image</Label>
