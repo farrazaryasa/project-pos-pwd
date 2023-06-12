@@ -25,7 +25,12 @@ module.exports = {
 
       } else {
         //jika email dan password valid buat token JWT
-        const token = jwt.sign({ id }, 'secretKey')
+        const token = jwt.sign(
+          {
+            id: id,
+            is_admin: findUser.is_admin
+          }, 'secretKey')
+
         const updateStatus = await users.update(
           { is_login: true },
           { where: { id: id } }

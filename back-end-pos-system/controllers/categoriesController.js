@@ -42,7 +42,7 @@ const getAllCategories = async (req, res) => {
                 data: result
             })
         } else {
-            res.statu(404).send({
+            res.status(404).send({
                 success: false,
                 message: 'no categories found',
                 data: null
