@@ -13,14 +13,13 @@ function App() {
   return (
     <div className='flex gap-5 w-full h-inherit'>
       <LeftNavbar />
-    
-    <Routes>
-      <Route path='/' element={<LandingPage />} />
-      <Route path='/products' element={<ProductsList />} />
-      <Route path='/login' element={<Login />} />
-      <Route path='/register' element={<Register />} />
-      <Route path='/order' element={<CashierLandingPage />} />
-    </Routes>
+
+      <Routes>
+        <Route path='/products' element={<ProductsList />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/order' element={<CashierLandingPage />} />
+      </Routes>
     </div>
   );
 }

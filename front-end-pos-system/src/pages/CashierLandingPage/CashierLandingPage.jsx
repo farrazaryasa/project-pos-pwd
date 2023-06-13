@@ -3,9 +3,9 @@ import LeftNavbar from "../../components/landingPageComp/LeftNavbar";
 import { getAllProducts } from "../../api/products";
 import CashierCard from "../../components/cashier/CashierCard";
 import TopButton from "../../components/cashier/TopButton";
-import { Button, Dropdown, Radio, FileInput, Label, Modal, Select, TextInput } from "flowbite-react";
+import { Button } from "flowbite-react";
 import OrderLists from "../../components/cashier/OrderLists";
-import { getAllOrders } from "../../api/orders";
+import { confirmOrder, getAllOrders, removeOrder } from "../../api/orders";
 
 
 
@@ -37,14 +37,54 @@ export default function CashierLandingPage() {
     }
 
     const productCart = async () => {
-        const result = await getAllOrders()
-        setCart(result.data)
+        const userLogin = localStorage.getItem("loginDetails") ? JSON.parse(localStorage?.getItem("loginDetails")) : null
+        if (userLogin) {
+            const result = await getAllOrders()
+            setCart(result.data)
+        }
+    }
+
+    const submitOrder = async () => {
+        try {
+            const confirmation = window.confirm('Confirm Order?')
+            if (confirmation === true) {
+                const confirm = await confirmOrder()
+                if (confirm.data.success === true) {
+                    alert('Order Submitted')
+                    setTimeout(() => {
+                        productCart()
+                    }, 200);
+                }
+            }
+        } catch (error) {
+            alert('ERROR')
+            console.log('error => ', error);
+        }
+    }
+
+    const cancelOrder = async () => {
+        try {
+            const confirmation = window.confirm('Cancel Order?')
+            if (confirmation === true) {
+                const cancel = await removeOrder()
+
+                if (cancel.data.success === true) {
+                    alert('Order Cancelled')
+                    setTimeout(() => {
+                        productCart()
+                    }, 200)
+                }
+            }
+        } catch (error) {
+
+        }
     }
 
     useEffect(() => {
         productLists()
         productCart()
     }, [])
+
     return (
         <div className="flex">
             <div className="flex flex-col gap-5 py-9">
@@ -55,7 +95,7 @@ export default function CashierLandingPage() {
                     {
                         data?.data?.rows?.map((value, index) => {
                             return (
-                                <CashierCard key={index} data={{ value }} />
+                                <CashierCard key={index} data={{ value, productCart }} />
                             )
                         })
                     }
@@ -94,9 +134,10 @@ export default function CashierLandingPage() {
                             )
                         })}
                     </div>
+
                     <div className="flex gap-5">
-                        <Button>Confirm Order</Button>
-                        <Button color={'failure'}>Cancel</Button>
+                        <Button onClick={submitOrder}>Confirm Order</Button>
+                        <Button onClick={cancelOrder} color={'failure'}>Cancel</Button>
                     </div>
                 </div>
             </div>
