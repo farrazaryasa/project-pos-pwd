@@ -3,10 +3,53 @@ const db = require('../models')
 const users = db.users
 
 module.exports = {
-  login: async (req, res) => {
-
+  register: async (req, res) => {
     try {
-      const { id, password } = req.body
+      const { email, password, first_name, last_name, birthdate } = req.body;
+
+      if (!email || !password || !first_name || !last_name || !birthdate) {
+        return res.status(400).json({
+          success: false,
+          message: 'Data harus diisi'
+        })
+      }
+      
+
+      const findUser = await users.findOne({ where: { email: email } })
+      console.log('Pengguna:', findUser)
+      if (findUser) {
+        return res.status(409).json({
+          success: false,
+          message: 'Pengguna sudah terdaftar'
+        });
+        
+      }
+
+      const newUser = await users.create({
+        email,
+        password,
+        first_name,
+        last_name,
+        birthdate
+      });
+
+      res.status(201).json({
+        success: true,
+        message: 'Registrasi berhasil',
+        userData: newUser
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        success: false,
+        message: 'Terjadi kesalahan saat registrasi'
+      });
+    }
+  },
+
+  login: async (req, res) => {
+    try {
+      const { email, password } = req.body;
 
       if (!id) {
         return res.status(400).send({
@@ -54,6 +97,7 @@ module.exports = {
         success: false,
         message: error.message,
         data: null
+
       })
     }
   },
