@@ -13,7 +13,7 @@ module.exports = {
           message: 'Data harus diisi'
         })
       }
-      
+
 
       const findUser = await users.findOne({ where: { email: email } })
       console.log('Pengguna:', findUser)
@@ -22,7 +22,7 @@ module.exports = {
           success: false,
           message: 'Pengguna sudah terdaftar'
         });
-        
+
       }
 
       const newUser = await users.create({
@@ -49,7 +49,7 @@ module.exports = {
 
   login: async (req, res) => {
     try {
-      const { email, password } = req.body;
+      const { id, password } = req.body;
 
       if (!id) {
         return res.status(400).send({

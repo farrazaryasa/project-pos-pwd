@@ -1,7 +1,18 @@
+import { useEffect } from "react"
+import { addToCart, getAllOrders } from "../../api/orders"
 
 
 export default function CashierCard(props) {
+    const addCart = async () => {
+        const add = await addToCart({ id: props.data.value.id })
 
+        if (add.data.success === true) {
+            alert('product added to cart success')
+            setTimeout(() => {
+                props.data.productCart()
+            }, 200)
+        }
+    }
 
     return (
         <div className="relative w-[250px] flex flex-col items-center rounded-lg gap-5 border py-12 drop-shadow">
@@ -15,7 +26,7 @@ export default function CashierCard(props) {
             <div className="font-bold">
                 {props.data.value.name}
             </div>
-            <button className="rounded-b w-full h-9 flex justify-center items-center absolute bottom-0 bg-blue-700 text-white hover:bg-blue-900 hover:cursor-pointer">
+            <button onClick={addCart} className="rounded-b w-full h-9 flex justify-center items-center absolute bottom-0 bg-blue-700 text-white hover:bg-blue-900 hover:cursor-pointer">
                 Add to Cart
             </button>
         </div>

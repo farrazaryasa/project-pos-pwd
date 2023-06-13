@@ -4,7 +4,6 @@ import { AiOutlineSearch } from 'react-icons/ai';
 export default function OrderLists(props) {
     return (
         <div className="border p-2">
-            {console.log(props)}
             <div className="w-full flex gap-4 items-center justify-around">
                 <div className="border w-20 h-20">
                     <img src={props.data.product.image ? `http://localhost:3456/productImage/${props.data.product.image}` : ''} className="w-full h-full" />
