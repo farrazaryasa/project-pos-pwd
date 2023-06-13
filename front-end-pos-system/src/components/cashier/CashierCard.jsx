@@ -1,7 +1,8 @@
 
 
-
 export default function CashierCard(props) {
+
+
     return (
         <div className="relative w-[250px] flex flex-col items-center rounded-lg gap-5 border py-12 drop-shadow">
             <div className="w-[200px] h-[200px]  flex items-center justify-center">

@@ -11,3 +11,14 @@ export function getAllOrders() {
         }
     )
 }
+
+export function addToCart() {
+    return axios.post(
+        process.env.REACT_APP_API + `/orders/new`,
+        {
+            headers: {
+                Authorization: `bearer ${userLogin?.token}`
+            }
+        }
+    )
+}

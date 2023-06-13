@@ -45,6 +45,7 @@ export default function CashierLandingPage() {
         productLists()
         productCart()
     }, [])
+
     return (
         <div className="flex">
             <div className="flex flex-col gap-5 py-9">

@@ -4,6 +4,7 @@ const orders = db.orders
 const products = db.products
 const product_orders = db.product_orders
 const transactions = db.transactions
+const users = db.users
 const jwt = require('jsonwebtoken')
 
 const addCart = async (req, res) => {
@@ -306,6 +307,9 @@ const getCart = async (req, res) => {
                         user_id: userToken.id,
                         is_paid: false
                     }
+                },
+                {
+                    model: products
                 }
             ]
         })
