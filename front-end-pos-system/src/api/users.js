@@ -3,7 +3,7 @@ import axios from "axios"
 
 export function postLogin(data) {
     return axios.post(
-        `http://localhost:3456/Login`,
+        process.env.REACT_APP_API + `/auth/login`,
         {
             id : data.id,
             password : data.password
@@ -20,3 +20,13 @@ export function postRegister(data) {
       birthdate: data.birthdate,
     });
   }
+
+export function userLogout(data){
+    return axios.post(
+        process.env.REACT_APP_API + `/auth/logout`,
+        {
+            id : data.id
+        }
+    )
+}
+

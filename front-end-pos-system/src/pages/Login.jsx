@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { postLogin } from '../api/users';
+import { Label, TextInput, Checkbox, Button } from 'flowbite-react'
 
 const Login = () => {
   const [id, setId] = useState('');
@@ -47,7 +48,13 @@ const Login = () => {
         // console.log(payoald)
         localStorage.setItem('loginDetails', JSON.stringify(payload))
 
-        navigate('/')
+        if (response.data.userData.is_admin === true) {
+          navigate('/products')
+          window.location.reload()
+        } else {
+          navigate('/newOrder')
+          window.location.reload()
+        }
       } else {
         const { message } = response.data;
         alert(message);
@@ -59,17 +66,17 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-pink-500">
+    <div className="flex justify-center items-center h-screen flex-1">
       <div className="login w-600px mx-8 my-16 text-base">
         <div className="login-triangle border-transparent border-t-12 border-b-0 mx-auto w-0" />
         <h2 className="login-header bg-blue-500 py-6 text-xl font-medium text-white text-center uppercase">
           Log in
         </h2>
-        <form className="login-container bg-gray-200 p-6" onSubmit={handleLoginFormSubmit}>
+        <form className="login-container bg-gray-200 p-6 flex flex-col gap-2" onSubmit={handleLoginFormSubmit}>
           <p>
             <input
               type="text"
-              placeholder="Email"
+              placeholder="Employee ID"
               className="input-field w-full bg-white border border-gray-300 py-4 px-6"
               onChange={handleEmailChange}
             />
