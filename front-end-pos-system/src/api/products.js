@@ -7,7 +7,8 @@ export function getAllProducts(data) {
         {
             params: {
                 page: data.page,
-                category: data.filterCategory
+                category: data.filterCategory,
+                sort: data.sortOption
             }
         }
     )
