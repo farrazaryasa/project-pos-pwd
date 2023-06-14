@@ -2,85 +2,95 @@ const db = require('./../models')
 const products = db.products
 const categories = db.categories
 
-
 const getAllProducts = async (req, res) => {
-    try {
-        const { page, category } = req.query
+  try {
+    const { page, category, sort } = req.query;
 
-        const paginationLimit = 10
-        const paginationOffset = (Number(page) - 1) * paginationLimit
+    const paginationLimit = 10;
+    const paginationOffset = (Number(page) - 1) * paginationLimit;
 
-        if (category) {
-            const catQuery = category.replaceAll('%', ' ')
+    if (category) {
+      const catQuery = category.replaceAll('%', ' ');
 
-            const findCategory = await categories.findOne({
-                where: {
-                    name: catQuery
-                }
-            })
+      const findCategory = await categories.findOne({
+        where: {
+          name: catQuery,
+        },
+      });
 
-            if (findCategory) {
-                const result = await products.findAndCountAll({
-                    where: {
-                        category_id: findCategory.id
-                    },
-                    offset: paginationOffset,
-                    limit: paginationLimit,
-                    include: categories
-                })
+      if (findCategory) {
+        const result = await products.findAndCountAll({
+          where: {
+            category_id: findCategory.id,
+          },
+          offset: paginationOffset,
+          limit: paginationLimit,
+          include: { model: categories }, 
+        });
 
-                const totalPage = Math.ceil(result.count / paginationLimit)
+        const totalPage = Math.ceil(result.count / paginationLimit);
 
-                res.status(200).send({
-                    success: true,
-                    message: `get all products in ${catQuery} categories success`,
-                    data: result,
-                    totalPage: totalPage
-                })
-            } else {
-                res.status(404).send({
-                    success: false,
-                    message: 'no products found',
-                    data: null
-                })
-            }
+        res.status(200).send({
+          success: true,
+          message: `get all products in ${catQuery} categories success`,
+          data: result,
+          totalPage: totalPage,
+        });
+      } else {
+        res.status(404).send({
+          success: false,
+          message: 'no products found',
+          data: null,
+        });
+      }
+    } else {
+      let order = [];
 
-        } else {
-            const totalProducts = await products.findAll()
-
-            const result = await products.findAndCountAll(
-                {
-                    offset: paginationOffset,
-                    limit: paginationLimit,
-                    include: categories,
-                }
-            )
-
-            const totalPage = Math.ceil(result.count / paginationLimit)
-
-            if (result) {
-                return res.status(200).send({
-                    success: true,
-                    message: "get all data success",
-                    data: result,
-                    totalPage: totalPage
-                })
-            } else {
-                return res.status(200).send({
-                    success: false,
-                    message: "get all data failed",
-                    data: {}
-                })
-            }
+      if (sort) {
+        if (sort === 'name-asc') {
+          order = [['name', 'ASC']];
+        } else if (sort === 'name-desc') {
+          order = [['name', 'DESC']];
+        } else if (sort === 'price-asc') {
+          order = [['price', 'ASC']];
+        } else if (sort === 'price-desc') {
+          order = [['price', 'DESC']];
         }
+      }
 
-    } catch (error) {
-        res.status(500).send({
-            success: false,
-            message: error.message,
-            data: null
+      const result = await products.findAndCountAll({
+        where: {},
+        offset: paginationOffset,
+        limit: paginationLimit,
+        include: { model: categories }, 
+        order: order,
+      });
+
+      const totalPage = Math.ceil(result.count / paginationLimit);
+
+      if (result) {
+        res.status(200).send({
+          success: true,
+          message: 'get all data success',
+          data: result,
+          totalPage: totalPage,
+        });
+      } else {
+        res.status(200).send({
+          success: false,
+          message: 'get all data failed',
+          data: {}
         })
+      }
     }
+
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: error.message,
+      data: null
+        })
+  }
 }
 
 const getProductDetails = async (req, res) => {
@@ -275,7 +285,54 @@ const modifyProducts = async (req, res) => {
         })
     }
 }
+// const sortProducts = async (req, res) => {
+//     try {
+//         const { sort } = req.query
 
+//         let order;
+
+//         switch (sort) {
+//             case 'name-asc':
+//                 order = [['name', 'ASC']]
+//                 break;
+//             case 'name-desc':
+//                 order = [['name', 'DESC']]
+//                 break;
+//             case 'price-asc':
+//                 order = [['price', 'ASC']]
+//                 break;
+//             case 'price-desc':
+//                 order = [['price', 'DESC']]
+//                 break;
+//             default:
+//                 break;
+//         }
+
+//         const sortedProducts = await products.findAll({
+//             order: order,
+//         })
+
+//         if (sortedProducts.length > 0) {
+//             return res.status(200).send({
+//                 success: true,
+//                 message: 'get sorted data success',
+//                 data: sortedProducts,
+//             })
+//         } else {
+//             return res.status(200).send({
+//                 success: false,
+//                 message: 'no sorted data found',
+//                 data: [],
+//             })
+//         }
+//     } catch (error) {
+//         res.status(500).send({
+//             success: false,
+//             message: error.message,
+//             data: null,
+//         })
+//     }
+// }
 
 module.exports = {
     getAllProducts,
@@ -283,5 +340,6 @@ module.exports = {
     addProducts,
     deleteProducts,
     modifyProducts
+
 }
 
