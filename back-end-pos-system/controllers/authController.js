@@ -8,39 +8,39 @@ module.exports = {
       const { email, password, first_name, last_name, birthdate } = req.body;
 
       if (!email || !password || !first_name || !last_name || !birthdate) {
-        return res.status(400).json({
+        return res.status(400).send({
           success: false,
-          message: 'Data harus diisi'
+          message: 'Please fill all the data'
         })
       }
 
-
       const findUser = await users.findOne({ where: { email: email } })
-      console.log('Pengguna:', findUser)
+
       if (findUser) {
-        return res.status(409).json({
+        return res.status(400).send({
           success: false,
           message: 'Pengguna sudah terdaftar'
         });
 
+      } else {
+        const newUser = await users.create({
+          email,
+          password,
+          first_name,
+          last_name,
+          birthdate,
+          role: 'cashier'
+        });
+
+        res.status(201).send({
+          success: true,
+          message: 'Registrasi berhasil',
+          userData: newUser
+        });
       }
 
-      const newUser = await users.create({
-        email,
-        password,
-        first_name,
-        last_name,
-        birthdate
-      });
-
-      res.status(201).json({
-        success: true,
-        message: 'Registrasi berhasil',
-        userData: newUser
-      });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({
+      res.status(500).send({
         success: false,
         message: 'Terjadi kesalahan saat registrasi'
       });

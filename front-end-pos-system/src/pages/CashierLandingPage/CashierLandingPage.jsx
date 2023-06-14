@@ -57,8 +57,7 @@ export default function CashierLandingPage() {
                 }
             }
         } catch (error) {
-            alert('ERROR')
-            console.log('error => ', error);
+            alert('Failed to submit order')
         }
     }
 
@@ -135,10 +134,12 @@ export default function CashierLandingPage() {
                         })}
                     </div>
 
-                    <div className="flex gap-5">
-                        <Button onClick={submitOrder}>Confirm Order</Button>
-                        <Button onClick={cancelOrder} color={'failure'}>Cancel</Button>
-                    </div>
+                    {
+                        cart?.data?.length > 0 ? <div className="flex gap-5">
+                            <Button onClick={submitOrder}>Confirm Order</Button>
+                            <Button onClick={cancelOrder} color={'failure'}>Cancel</Button>
+                        </div> : ''
+                    }
                 </div>
             </div>
         </div>

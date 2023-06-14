@@ -5,6 +5,7 @@ import { getAllCategories } from "../../api/categories";
 import { Button, Dropdown, Radio, FileInput, Label, Modal, Select, TextInput } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { AiOutlineSearch } from 'react-icons/ai';
+import { AiOutlineLineChart } from 'react-icons/ai'
 
 
 export default function ProductCenter() {
@@ -91,7 +92,14 @@ export default function ProductCenter() {
             <div className="h-full w-full flex flex-col gap-5 flex-1">
 
                 <div className="flex justify-between items-center">
-                    <div> <Button onClick={() => setVisible(true)} className=" h-9" gradientDuoTone="purpleToBlue">Add New Product</Button> </div>
+                    <div className="flex gap-9 items-center">
+                        <div> <Button onClick={() => setVisible(true)} className=" h-9" gradientDuoTone="purpleToBlue">Add New Product</Button> </div>
+                        <Link to={'/report'}>
+                            <div>
+                                <Button color={'gray'}><AiOutlineLineChart className="mr-2" size={23} />Generate Report</Button>
+                            </div>
+                        </Link>
+                    </div>
 
                     {/* Bagian Kanan ==> filter dan search */}
                     <div className="h-full px-5 flex gap-5 items-center">

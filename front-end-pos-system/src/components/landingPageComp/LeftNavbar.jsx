@@ -58,12 +58,14 @@ export default function LeftNavbar() {
                     </div>
                 </div>
             </Link>
-            <div className="border my-5 px-5 w-full h-[100px] flex items-center justify-center text-lg font-bold rounded-lg hover:bg-blue-800 hover:text-white hover:cursor-pointer">
-                <div className='flex flex-col gap-2'>
-                    <div className='flex items-center justify-center'><BsPeopleFill size={'25px'} /></div>
-                    <div>Staff</div>
+            <Link to={'/staff'}>
+                <div className="border my-5 px-5 w-full h-[100px] flex items-center justify-center text-lg font-bold rounded-lg hover:bg-blue-800 hover:text-white hover:cursor-pointer">
+                    <div className='flex flex-col gap-2'>
+                        <div className='flex items-center justify-center'><BsPeopleFill size={'25px'} /></div>
+                        <div>Staff</div>
+                    </div>
                 </div>
-            </div>
+            </Link>
             {
                 loginData ?
                     <div onClick={logoutProcess} className="border my-5 px-5 w-full h-[100px] flex items-center justify-center text-lg font-bold rounded-lg hover:bg-blue-800 hover:text-white hover:cursor-pointer">

@@ -8,6 +8,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import LeftNavbar from './components/landingPageComp/LeftNavbar';
 import CashierLandingPage from './pages/CashierLandingPage/CashierLandingPage';
+import Report from './pages/Report/Report';
+import StaffPage from './pages/Staff/Staff';
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/order' element={<CashierLandingPage />} />
+        <Route path='/report' element={<Report />} />
+        <Route path='/staff' element={<StaffPage />} />
       </Routes>
     </div>
   );
