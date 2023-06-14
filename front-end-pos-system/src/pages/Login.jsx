@@ -52,7 +52,7 @@ const Login = () => {
           navigate('/products')
           window.location.reload()
         } else {
-          navigate('/newOrder')
+          navigate('/order')
           window.location.reload()
         }
       } else {

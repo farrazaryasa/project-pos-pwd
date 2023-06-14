@@ -57,7 +57,48 @@ const getAllCategories = async (req, res) => {
     }
 }
 
+const deleteCategory = async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const findCategory = await categories.findOne({
+            where: {
+                id: id
+            }
+        })
+
+        if (findCategory) {
+            const removeCategory = await categories.destroy({
+                where: {
+                    id: findCategory.id
+                }
+            })
+
+            if (removeCategory) {
+                res.status(200).send({
+                    success: true,
+                    message: 'category deleted',
+                    data: null
+                })
+            }
+        } else {
+            res.status(404).send({
+                success: false,
+                message: 'categories not found',
+                data: null
+            })
+        }
+    } catch (error) {
+        res.status(500).send({
+            success: false,
+            message: error.message,
+            data: null
+        })
+    }
+}
+
 module.exports = {
     createCategory,
-    getAllCategories
+    getAllCategories,
+    deleteCategory
 }

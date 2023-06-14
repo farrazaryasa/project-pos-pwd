@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { postRegister } from '../api/users';
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -30,6 +32,7 @@ export default function Register() {
         .then(response => {
           console.log("Registration successful:", response.data);
           alert('Registrasi berhasil');
+          window.location.reload()
         })
         .catch(error => {
           if (error.response && error.response.data && error.response.data.message) {
@@ -79,9 +82,9 @@ export default function Register() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center h-screen w-screen">
       <div className="w-96 mx-auto">
-        <h1 className="text-2xl font-bold mb-4">Register</h1>
+        <h1 className="text-2xl font-bold mb-4">Register New Cashier</h1>
         <form onSubmit={handleSubmit} className="flex flex-col">
           <input
             className="border border-gray-300 px-4 py-2 rounded-md mb-4"
@@ -144,7 +147,7 @@ export default function Register() {
           )}
 
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-md"
+            className="bg-blue-500 text-white px-4 py-2 my-2 rounded-md"
             type="submit"
           >
             Register

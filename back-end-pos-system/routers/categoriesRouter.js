@@ -3,7 +3,8 @@ const router = express.Router()
 
 const { categoriesController } = require('./../controllers')
 
-router.post('/new', categoriesController.createCategory)
+router.post('/', categoriesController.createCategory)
 router.get('/', categoriesController.getAllCategories)
+router.delete('/:id', categoriesController.deleteCategory)
 
 module.exports = router

@@ -17,9 +17,7 @@ export default function OrderLists(props) {
             </div>
             <div className="flex justify-between items-center gap-4 pt-4">
                 <div className="flex gap-4">
-                    <button className="border h-6 w-6 flex items-center justify-center"> - </button>
                     <div>{props.data.quantity}</div>
-                    <button className="border h-6 w-6 flex items-center justify-center"> + </button>
                 </div>
                 <div className="font-bold">Total : Rp {((props.data.product.price) * (props.data.quantity)).toLocaleString('id')}</div>
             </div>
