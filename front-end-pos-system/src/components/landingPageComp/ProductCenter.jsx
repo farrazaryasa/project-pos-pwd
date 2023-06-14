@@ -8,11 +8,12 @@ import { AiOutlineSearch } from 'react-icons/ai';
 
 
 export default function ProductCenter() {
-    const [data, setData] = useState([])
-    let [page, setPage] = useState(1)
-    const [category, setCategory] = useState([])
-    const [visible, setVisible] = useState(false)
-    const [filterCategory, setFilterCategory] = useState('')
+    const [data, setData] = useState([]);
+    const [page, setPage] = useState(1);
+    const [category, setCategory] = useState([]);
+    const [visible, setVisible] = useState(false);
+    const [filterCategory, setFilterCategory] = useState('');
+    const [sortOption, setSortOption] = useState('');
 
     const _name = useRef()
     const _price = useRef()
@@ -22,10 +23,9 @@ export default function ProductCenter() {
 
     const getProducts = async () => {
         const catQuery = filterCategory.replaceAll(' ', '%')
-        // console.log('filter => ', filterCategory);
-        const result = await getAllProducts({ page, filterCategory })
-        console.log('data => ', result.data);
+        const result = await getAllProducts({ page, filterCategory, sortOption })
         setData(result.data)
+        // console.log(result.data)
     }
 
     const nextPage = () => {
@@ -58,18 +58,18 @@ export default function ProductCenter() {
                 stock: stock,
                 image: image,
                 category: category
-            })
+            });
 
             if (result.data.success) {
-                alert('Create new product success')
+                alert('Create new product success');
                 setTimeout(() => {
-                    window.location.reload()
+                    window.location.reload();
                 }, 500);
             } else {
-                alert('Create new product failed')
+                alert('Create new product failed');
             }
         }
-    }
+    };
 
     const categoryList = async () => {
         const result = await getAllCategories()
@@ -81,10 +81,27 @@ export default function ProductCenter() {
         getProducts()
     }
 
+    const handleSortChange = async (event) => {
+        const sortOption = event.target.value
+        setSortOption(sortOption)
+
+        try {
+            const result = await getAllProducts({ page, category: filterCategory, sort: sortOption })
+            console.log(result.data)
+            if (result.data && result.data.length > 0) {
+                setData(updatedData)
+            } else {
+                setData([])
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         getProducts()
         categoryList()
-    }, [filterCategory])
+    }, [filterCategory, sortOption])
 
     return (
         <div className="flex">
@@ -120,12 +137,44 @@ export default function ProductCenter() {
                             <Dropdown label='Sort'>
                                 <div className="flex flex-col gap-2 items-center">
                                     <div className="flex gap-2">
-                                        <Radio />
+                                        <Radio
+                                            id="name-asc"
+                                            name="sort"
+                                            value="name-asc"
+                                            checked={sortOption === 'name-asc'}
+                                            onChange={handleSortChange}
+                                        />
                                         <Label>A - Z</Label>
                                     </div>
                                     <div className="flex gap-2">
-                                        <Radio />
+                                        <Radio
+                                            id="name-desc"
+                                            name="sort"
+                                            value="name-desc"
+                                            checked={sortOption === 'name-desc'}
+                                            onChange={handleSortChange}
+                                        />
                                         <Label>Z - A</Label>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <Radio
+                                            id="price-asc"
+                                            name="sort"
+                                            value="price-asc"
+                                            checked={sortOption === 'price-asc'}
+                                            onChange={handleSortChange}
+                                        />
+                                        <Label>Price asc</Label>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <Radio
+                                            id="price-desc"
+                                            name="sort"
+                                            value="price-desc"
+                                            checked={sortOption === 'price-desc'}
+                                            onChange={handleSortChange}
+                                        />
+                                        <Label>Price desc</Label>
                                     </div>
                                 </div>
                             </Dropdown>
