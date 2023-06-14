@@ -33,7 +33,7 @@ export function deleteProduct(product_id) {
 
 export function createProducts(data) {
     return axios.post(
-        process.env.REACT_APP_API + `/products/new`,
+        process.env.REACT_APP_API + `/products/`,
         {
             name: data.name,
             price: data.price,

@@ -47,9 +47,9 @@ export default function StaffPage() {
                     </Table.Head>
                     <Table.Body>
                         {
-                            staff?.data?.map((value, index) => {
+                            staff?.data?.data?.map((value, index) => {
                                 return (
-                                    <TableStaff data={value} />
+                                    <TableStaff key={index} data={value} />
                                 )
                             })
                         }

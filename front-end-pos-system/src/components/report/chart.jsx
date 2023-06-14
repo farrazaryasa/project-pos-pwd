@@ -10,25 +10,6 @@ import {
 } from "recharts";
 import { getChartData } from "../../api/report";
 
-// const data = [
-// {
-//     name: "2023-06-12",
-//         uv: 12000,
-//         // pv: 12000,
-//     },
-// {
-//     name: "2023-06-13",
-//         uv: 427500,
-//         // pv: 439500,
-//     },
-// {
-//     name: "2023-06-14",
-//         uv: 12700,
-//         // pv: 456500,
-//     }
-// ];
-
-
 export default function ChartReport() {
     const [data, setData] = useState([])
     const [chart, setChart] = useState([])
@@ -56,7 +37,7 @@ export default function ChartReport() {
     useEffect(() => {
         chartData()
         chartPoint()
-    }, [])
+    }, [chart])
     return (
         <LineChart
             width={1000}

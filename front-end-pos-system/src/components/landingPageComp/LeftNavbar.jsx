@@ -22,9 +22,6 @@ export default function LeftNavbar() {
         if (logout.data.success) {
             localStorage.removeItem('loginDetails')
             alert('Logout success')
-            setTimeout(() => {
-                window.location.reload()
-            }, 200)
         } else {
             alert('Logout failed, please try again!')
         }
@@ -37,11 +34,9 @@ export default function LeftNavbar() {
     return (
         <div className="flex-2 w-[150px] h-inherit mx-9">
             {/* {console.log('login ==>', loginData)} */}
-            <Link to={'/'}>
-                <div className="my-5">
-                    <img src="https://i.pinimg.com/originals/6e/cb/91/6ecb91e73eab30f51b0b29a880338147.png" alt='logo pos system' />
-                </div>
-            </Link>
+            <div className="my-5">
+                <img src="https://i.pinimg.com/originals/6e/cb/91/6ecb91e73eab30f51b0b29a880338147.png" alt='logo pos system' />
+            </div>
             <Link to={'/order'}>
                 <div className="border my-5 px-2 w-full h-[100px] flex items-center justify-center text-lg font-bold rounded-lg hover:bg-blue-800 hover:text-white hover:cursor-pointer">
                     <div className='flex flex-col gap-2'>
@@ -68,12 +63,14 @@ export default function LeftNavbar() {
             </Link>
             {
                 loginData ?
-                    <div onClick={logoutProcess} className="border my-5 px-5 w-full h-[100px] flex items-center justify-center text-lg font-bold rounded-lg hover:bg-blue-800 hover:text-white hover:cursor-pointer">
-                        <div className='flex flex-col gap-2'>
-                            <div className='flex items-center justify-center'><LuLogIn size={'25px'} /></div>
-                            <div>Logout</div>
+                    <Link to={'/login'}>
+                        <div onClick={logoutProcess} className="border my-5 px-5 w-full h-[100px] flex items-center justify-center text-lg font-bold rounded-lg hover:bg-blue-800 hover:text-white hover:cursor-pointer">
+                            <div className='flex flex-col gap-2'>
+                                <div className='flex items-center justify-center'><LuLogIn size={'25px'} /></div>
+                                <div>Logout</div>
+                            </div>
                         </div>
-                    </div> :
+                    </Link> :
                     <Link to={'/login'}>
                         <div className="border my-5 px-5 w-full h-[100px] flex items-center justify-center text-lg font-bold rounded-lg hover:bg-blue-800 hover:text-white hover:cursor-pointer">
                             <div className='flex flex-col gap-2'>

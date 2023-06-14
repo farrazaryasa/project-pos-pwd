@@ -126,10 +126,10 @@ export default function ProductCard(props) {
                                         </div>
                                     </div>
                                     <div className="font-bold flex gap-5">
-                                        Category :
+                                        {/* Category :
                                         <div className="font-normal">
                                             -
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                             </div>

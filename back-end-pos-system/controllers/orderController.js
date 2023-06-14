@@ -163,84 +163,6 @@ const addCart = async (req, res) => {
     }
 }
 
-const decreaseProductCart = async (req, res) => {
-    try {
-        const { product_id } = req.body
-        let token = req.headers.authorization
-        token = token.split(" ")[1]
-        const userToken = jwt.verify(token, 'secretKey')
-
-        const findOrder = await orders.findOne({
-            where: {
-                user_id: userToken.id,
-                is_paid: false
-            }
-        })
-
-        const findProduct = await products.findOne({
-            where: {
-                id: product_id
-            }
-        })
-
-        if (findOrder && findProduct) {
-            const findProductOrder = await product_orders.findOne({
-                where: {
-                    order_id: findOrder.id,
-                    product_id: findProduct.id
-                }
-            })
-
-            if (findProductOrder.quantity === 1) {
-                const deleteOrder = await product_orders.destroy({
-                    where: {
-                        id: findProductOrder.id
-                    }
-                })
-
-                const updateStock = await products.update(
-                    { stock: findProduct.stock + 1 },
-                    { where: { id: findProduct.id } }
-                )
-
-                res.status(200).send({
-                    success: true,
-                    message: 'product deleted from order',
-                    data: {}
-                })
-            } else {
-                const decreaseQuantity = await findProductOrder.update(
-                    { quantity: findProductOrder.quantity - 1 },
-                    { where: { id: findProductOrder.id } }
-                )
-
-                const updateStock = await products.update(
-                    { stock: findProduct.stock + 1 },
-                    { where: { id: findProduct.id } }
-                )
-
-                res.status(200).send({
-                    success: true,
-                    message: 'product quantity reduced from order',
-                    data: {}
-                })
-            }
-        } else {
-            res.status(404).send({
-                success: false,
-                message: 'order not found',
-                data: null
-            })
-        }
-    } catch (error) {
-        res.status(500).send({
-            success: false,
-            message: error.message,
-            data: null
-        })
-    }
-}
-
 const userPaid = async (req, res) => {
     try {
         let token = req.headers.authorization
@@ -392,7 +314,6 @@ const removeCart = async (req, res) => {
 
 module.exports = {
     addCart,
-    decreaseProductCart,
     userPaid,
     getCart,
     removeCart

@@ -1,8 +1,8 @@
 import ProductCard from "./ProductCard";
 import { useEffect, useRef, useState } from 'react';
 import { createProducts, filterProducts, getAllProducts } from '../../api/products';
-import { getAllCategories } from "../../api/categories";
-import { Button, Dropdown, Radio, FileInput, Label, Modal, Select, TextInput } from "flowbite-react";
+import { addNewCategory, deleteCategory, getAllCategories } from "../../api/categories";
+import { Button, Dropdown, Radio, FileInput, Label, Modal, Select, TextInput, Table } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { AiOutlineSearch } from 'react-icons/ai';
 import { AiOutlineLineChart } from 'react-icons/ai'
@@ -10,17 +10,20 @@ import { AiOutlineLineChart } from 'react-icons/ai'
 
 export default function ProductCenter() {
     const [data, setData] = useState([]);
-    const [page, setPage] = useState(1);
+    let [page, setPage] = useState(1);
     const [category, setCategory] = useState([]);
     const [visible, setVisible] = useState(false);
     const [filterCategory, setFilterCategory] = useState('');
     const [sortOption, setSortOption] = useState('');
+    const [categoryMod, setCategoryMod] = useState(false)
+    const [addCat, setAddCat] = useState(false)
 
     const _name = useRef()
     const _price = useRef()
     const _stock = useRef()
     const _image = useRef()
     const _category = useRef()
+    const _categoryName = useRef()
 
     const getProducts = async () => {
         const catQuery = filterCategory.replaceAll(' ', '%')
@@ -90,7 +93,7 @@ export default function ProductCenter() {
             const result = await getAllProducts({ page, category: filterCategory, sort: sortOption })
             console.log(result.data)
             if (result.data && result.data.length > 0) {
-                setData(updatedData)
+                // setData(updatedData)
             } else {
                 setData([])
             }
@@ -98,6 +101,33 @@ export default function ProductCenter() {
             console.log(error)
         }
     }
+
+    const addCategory = async () => {
+        try {
+            const categoryName = _categoryName.current.value
+
+            if (categoryName === '') {
+                alert('Please insert new category name')
+            } else {
+                const result = await addNewCategory(categoryName)
+                if (result.data.success === true) {
+                    alert('Add New Category Success')
+                    categoryList()
+                }
+            }
+
+        } catch (error) {
+            alert('error')
+        }
+    }
+
+    // const removeCategory = async () => {
+    //     try {
+    //         const deleteCat = await deleteCategory()
+    //     } catch (error) {
+
+    //     }
+    // }
 
     useEffect(() => {
         getProducts()
@@ -111,6 +141,7 @@ export default function ProductCenter() {
                 <div className="flex justify-between items-center">
                     <div className="flex gap-9 items-center">
                         <div> <Button onClick={() => setVisible(true)} className=" h-9" gradientDuoTone="purpleToBlue">Add New Product</Button> </div>
+                        <div> <Button onClick={() => setCategoryMod(true)} className=" h-9" gradientDuoTone="cyanToBlue">Categories</Button></div>
                         <Link to={'/report'}>
                             <div>
                                 <Button color={'gray'}><AiOutlineLineChart className="mr-2" size={23} />Generate Report</Button>
@@ -274,6 +305,66 @@ export default function ProductCenter() {
                             </div>
                         </div>
                     </Modal.Body>
+                </Modal>
+
+                <Modal show={categoryMod} onClose={() => setCategoryMod(false)}>
+                    <Modal.Header>
+                        <div className="flex flex-col gap-4">
+                            <div>Category Lists</div>
+                            <div><Button onClick={() => setAddCat(true)}>Add New Category</Button></div>
+                        </div>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Table hoverable>
+                            <Table.Head>
+                                <Table.HeadCell>Category Name</Table.HeadCell>
+                            </Table.Head>
+                            <Table.Body>
+                                {
+                                    category?.data?.map((value, index) => {
+                                        return (
+                                            <Table.Row>
+                                                <Table.Cell>{value.name}</Table.Cell>
+                                                <Table.Cell>
+                                                    <a
+                                                        className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 hover:cursor-pointer"
+                                                    >
+                                                        <p>
+                                                            Edit
+                                                        </p>
+                                                    </a>
+                                                </Table.Cell>
+                                                <Table.Cell>
+                                                    {
+                                                        <a
+                                                            className="font-medium text-red-600 hover:underline dark:text-cyan-500 hover:cursor-pointer"
+                                                        >
+                                                            <p>
+                                                                Delete
+                                                            </p>
+                                                        </a>
+                                                    }
+                                                </Table.Cell>
+                                            </Table.Row>
+                                        )
+                                    })
+                                }
+                            </Table.Body>
+                        </Table>
+                    </Modal.Body>
+                </Modal>
+
+                <Modal show={addCat} onClose={() => setAddCat(false)}>
+                    <Modal.Header>
+                        Add New Category
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Label>Category Name</Label>
+                        <TextInput ref={_categoryName}></TextInput>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={addCategory}>Submit</Button>
+                    </Modal.Footer>
                 </Modal>
             </div>
         </div>

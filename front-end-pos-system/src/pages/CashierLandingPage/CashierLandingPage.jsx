@@ -87,9 +87,6 @@ export default function CashierLandingPage() {
     return (
         <div className="flex">
             <div className="flex flex-col gap-5 py-9">
-                <div>
-                    <TopButton />
-                </div>
                 <div className="flex-1 h-full mx-12 flex gap-5 flex-wrap items-center">
                     {
                         data?.data?.rows?.map((value, index) => {

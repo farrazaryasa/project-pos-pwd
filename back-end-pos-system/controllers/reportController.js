@@ -41,7 +41,35 @@ const chartData = async (req, res) => {
     }
 }
 
+const productSales = async (req, res) => {
+    try {
+        const getSales = await product_orders.findAll({
+            include: [products, orders]
+        })
+
+        if (getSales) {
+            res.status(200).send({
+                success: true,
+                message: 'get all transactions data success',
+                data: getSales
+            })
+        } else {
+            res.status(404).send({
+                success: false,
+                message: 'no transactions found',
+                data: null
+            })
+        }
+    } catch (error) {
+        res.status(500).send({
+            success: false,
+            message: error.message,
+            data: null
+        })
+    }
+}
 
 module.exports = {
-    chartData
+    chartData,
+    productSales
 }
